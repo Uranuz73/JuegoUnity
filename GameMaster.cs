@@ -23,14 +23,21 @@ public class GameMaster : MonoBehaviour
             EndGame();
         }
 
-        void EndGame() {
+    }
 
-            gameOver = true;
-            gameOverUI.SetActive(true);
-            Time.timeScale = 0f;
+    void EndGame()
+    {
 
-        }
+        gameOver = true;
+        gameOverUI.SetActive(true);
+        Time.timeScale = 0f;
 
+    }
+
+    public void WinLevel()
+    {
+        PlayerPrefs.SetInt("levelReached", 2);
+        Time.timeScale = 0f;
 
     }
 }

@@ -6,9 +6,9 @@ using UnityEngine.UI;
 public class WaveSpawner : MonoBehaviour
 {
     public static int EnemiesAlive = 0;
-    public Transform enemyPrefab;
     public float countdownTime = 5f;
     private float countdown = 2f;
+    public GameMaster gameMaster;
 
     public WaveClass[] waves;
 
@@ -26,7 +26,13 @@ public class WaveSpawner : MonoBehaviour
             return;
         }
 
-        if (countdown <= 0) {
+        Debug.Log(WaveNumber + "a");
+        Debug.Log(waves.Length + "b");
+
+
+
+
+        if (countdown <= 0f) {
             StartCoroutine(SpawnWave());
             countdown = countdownTime;
             return;
@@ -46,22 +52,35 @@ public class WaveSpawner : MonoBehaviour
 
         WaveClass wave = waves[WaveNumber];
 
-        for (int i = 0; i < wave.count; i++)
+
+
+        EnemiesAlive = wave.count;
+
+        for (int i = 0; i < wave.count ; i++)
         {
+
             SpawnEnemy(wave.enemy);
 
             yield return new WaitForSeconds(1f / wave.rate);
+
+            
         }
+
 
         WaveNumber++;
 
+        if (WaveNumber == waves.Length)
+        {
+
+            gameMaster.WinLevel();
+            this.enabled = false;
+        }
 
     }
 
 
     void SpawnEnemy(GameObject enemy) {
-        Instantiate(enemyPrefab, spawnPoint.position, spawnPoint.rotation);
-        EnemiesAlive++;
+        Instantiate(enemy, spawnPoint.position, spawnPoint.rotation);
     }
 }
   
